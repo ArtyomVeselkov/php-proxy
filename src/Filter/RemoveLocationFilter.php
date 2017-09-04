@@ -1,27 +1,23 @@
 <?php namespace Proxy\Filter;
 
+use Proxy\Predicate\PredicateList;
+use Proxy\Predicate\HasHeader;
+use Proxy\Action\RemoveHeaderAction;
+
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class RemoveLocationFilter implements FilterInterface {
+class RemoveLocationFilter extends AbstractPredicateFilter {
 
     const LOCATION = 'location';
 
-    /**
-     * @inheritdoc
-     */
-    public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next)
-    {
-        $response = $next($request, $response);
-
-        if ($response->hasHeader(self::LOCATION))
-        {
-            $response = $response
-                ->withHeader('X-Proxy-Location', $response->getHeader(self::LOCATION))
-                ->withoutHeader(self::LOCATION);
-        }
-
-        return $response;
+    protected function getRequestPredicateList() {
+      return null;
     }
+
+    protected function getResponsePredicateList() {
+      return new PredicateList([new HasHeader(self::LOCATION)], new RemoveHeaderAction(self::LOCATION));
+    }
+
 
 }

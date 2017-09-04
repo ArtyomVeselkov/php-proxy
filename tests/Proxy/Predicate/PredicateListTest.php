@@ -5,7 +5,6 @@ use Proxy\Filter\RemoveLocationFilter;
 
 class PredicateListTest extends \PHPUnit_Framework_TestCase
 {
-
     private function doRequest($uri)
     {
       $request = new Request($uri);
@@ -13,7 +12,7 @@ class PredicateListTest extends \PHPUnit_Framework_TestCase
 
       $filter = new RemoveLocationFilter();
 
-      $requestAction = function() use($request) { return $request->withHeader('foo', 'bar');  };
+      $requestAction = function() use($request) { return $request->withHeader('foo', 'bar'); };
 
       $list = new PredicateList([
         new HasPath('test'),
